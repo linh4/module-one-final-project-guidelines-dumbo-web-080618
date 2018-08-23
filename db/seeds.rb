@@ -35,6 +35,8 @@ Card.create(category: "love", name: "The Star", saying:
 "Sometimes letting go is the best option. It will open up new possibilites.")
 Card.create(category: "love", name: "The Lovers", saying:
 "Make the best out of the relationship after the initial bliss is gone.")
+Card.create(category: "love", name: "The Four of Wands", saying:
+"Someone could make you happy today if you only let them.")
 
 
 ##### CAREER CARDS #####
@@ -54,6 +56,9 @@ Card.create(category: "career", name: "The Ten of Pentacles", saying:
 "Inheritance or retirement is foreseen.")
 Card.create(category: "career", name: "The Nine of Pentacles", saying:
 "Your hard work and careful planning will be rewarded.")
+Card.create(category: "career", name: "The Ten of Cups", saying:
+"You can expect achievement and to attain some long goal.")
+
 
 ##### FUTURE CARDS #####
 Card.create(category: "future", name: "Eight Of Swords", saying:
@@ -78,7 +83,3 @@ Card.create(category: "future", name: "The Four Of Swords", saying:
 "Offer your withdrawal from certain battles in your life.")
 
 ##### PRESENT CARDS #####
-Card.create(category: "present", name: "The Ten of Cups", saying:
-"You can expect achievement and to attain some long goal.")
-Card.create(category: "present", name: "The Four of Wands", saying:
-"Something in your life is not what it seems.")
