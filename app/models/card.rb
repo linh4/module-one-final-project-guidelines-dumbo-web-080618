@@ -37,10 +37,10 @@ class Card < ActiveRecord::Base
     :bg_fill => true,
     :resolution => "high"
   end
-    
-  def card_img(card)
+
+  def card_img
     Card.all.find do |e|
-      if e.id == card.id
+      if e.id == self.id
         try_img(Random.rand(1..3))
       end
     end

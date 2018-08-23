@@ -156,7 +156,7 @@ class User < ActiveRecord::Base
     end
     puts `clear`
     puts `clear`
-    found_card.card_img(found_card)
+    puts found_card.card_img
     card_name = found_card.name.insert(0,"              ")
     puts RubyFiglet::Figlet.new(card_name, "thin")
 
