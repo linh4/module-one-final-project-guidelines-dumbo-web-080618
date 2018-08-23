@@ -16,20 +16,9 @@ Card.create(category: "self", name: "The Hanged Man", saying:
 Card.create(category: "love", name: "The High Priestess", saying:
 "Trust your instincts. Go for it. ")
 Card.create(category: "love", name: "The Hermit", saying:
-<<<<<<< HEAD
-"Are your dreams trying to tell you something important? The Hermit
-stands alone and reaches deep within himself to find the answers he is
-looking for, and he tells you to pay close attention to symbols that
-appear in your dreams via your subconscious.")
-Card.create(category: "love", name: "The Moon", saying:
-"Can you feel the warmth spreading across your face? The Sun card is
-representative of joy and exuberance, which means your enthusiasm for a
-current or potential love connection is well-placed.")
-=======
 "Let go of the past. The present is a gift.")
 Card.create(category: "love", name: "The Moon", saying:
 "It might not be what it appears to be. Deception-inception.")
->>>>>>> 75a7f9a6b70989e1d7cc67a739707acdb542231f
 Card.create(category: "love", name: "The Fool", saying:
 "You’re learning, but you’re just not quite there yet.")
 Card.create(category: "love", name: "Strength", saying:

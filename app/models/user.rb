@@ -165,49 +165,6 @@ class User < ActiveRecord::Base
     menu(user)
   end
 
-<<<<<<< HEAD
-  def readings(user)
-    ReadingCard.select {|rc| rc.user_id == user.id}
-  end
-
-  def cards(user)
-    users_cards = Hash.new(0)
-    Card.all.each do |c|
-      readings(user).each do |r|
-        if r.card_id == c.id
-          users_cards[c] = r.id
-        end
-      end
-    end
-    users_cards
-  end
-
-  def card_names(user)
-    names = []
-    cards(user).each {|k,v| names << k.name}
-    names
-  end
-
-  def card_sayings(user)
-    cards(user).map {|c| c.saying}
-  end
-
-  def categories(user)
-    cards(user).map {|c| c.category}
-  end
-
-
-
-  def history(user)
-    # terminal-table
-    # Date | Name | Category | Saying | Lucky Numbers
-    # rows = []
-    # for i = 0..readings.size-1
-    # rows << ["#{readings[i].date}", "card_names"]
-    readings = ReadingCard.all.select {|rc| rc.user == user}
-    binding.pry
-    puts readings
-=======
   def find_readings(user)
     ReadingCard.select { |rc| rc.user.id == user.id }
   end
@@ -217,7 +174,6 @@ class User < ActiveRecord::Base
     get_card_id.map do |e|
       Card.all.select { |card| card.id == e }
     end.flatten
->>>>>>> 75a7f9a6b70989e1d7cc67a739707acdb542231f
   end
 
   def category(user)
