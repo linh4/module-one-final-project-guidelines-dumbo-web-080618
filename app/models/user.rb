@@ -4,14 +4,15 @@ require 'pastel'
 require 'ruby_figlet'
 require 'catpix'
 
-def wel_word
-  pastel = Pastel.new(enabled: true)
-  color = RubyFiglet::Figlet.new("Tarot House", "Electronic")
-  puts pastel.red(color)
-end
 
 class User < ActiveRecord::Base
   has_many :reading_cards
+
+  def wel_word
+    pastel = Pastel.new(enabled: true)
+    color = RubyFiglet::Figlet.new("Tarot House", "Electronic")
+    puts pastel.red(color)
+  end
 
   def welcome
     prompt = TTY::Prompt.new(active_color: :on_red)
