@@ -28,9 +28,9 @@ class Card < ActiveRecord::Base
   end
 
   def try_img(num)
-    Catpix::print_image "img/pic_#{num}.jpg",
-    :limit_x => 1,
-    :limit_y => 2,
+    Catpix::print_image "img/image_#{num}.png",
+    :limit_x => 0.5,
+    :limit_y => 0.9,
     :center_x => true,
     :center_y => true,
     :bg => "black",
@@ -41,7 +41,7 @@ class Card < ActiveRecord::Base
   def card_img
     Card.all.find do |e|
       if e.id == self.id
-        try_img(Random.rand(1..3))
+        try_img(Random.rand(1..11))
       end
     end
   end

@@ -37,8 +37,18 @@ class User < ActiveRecord::Base
     puts "Please enter your name:"
     username = gets.downcase.chomp
       if !User.exists?(name: username)
-        puts "We don't have a #{username} on file. Would you like to create a new account?"
-        user = new_user(username)
+        # puts "We don't have a #{username} on file. Would you like to create a new account?"
+        prompt = TTY::Prompt.new
+        w = prompt.select("We don't have a #{username} on file. Would you like to create a new account?") do |menu|
+          menu.choices "Yes" => "yes", "No" => "no"
+        end
+        case w
+          when "yes"
+            user = new_user(username)
+          when "no"
+            lucky_number
+            exit
+        end
       else
         user = User.find_by(name: username)
       end
@@ -157,14 +167,14 @@ class User < ActiveRecord::Base
     puts `clear`
     puts `clear`
     puts found_card.card_img
-    card_name = found_card.name.insert(0,"              ")
-    puts RubyFiglet::Figlet.new(card_name, "thin")
+    card_name = found_card.name
+    puts pastel.magenta(RubyFiglet::Figlet.new(card_name, "thin"))
 
-    # card_saying = found_card.saying.insert(0,"                     ")
-    # puts RubyFiglet::Figlet.new(card_saying, "banner")
+    # card_saying = found_card.saying
+    # puts RubyFiglet::Figlet.new(card_saying, "thin")
 
-    #straight
-    puts found_card.saying
+
+    puts pastel.yellow(found_card.saying)
     new_reading_card(user, found_card)
     menu(user)
   end
@@ -260,9 +270,40 @@ class User < ActiveRecord::Base
     puts "                                            Here are your lucky numbers:\n\n"
     number = 3.times.map { Random.rand(200).to_s }.insert(0, "                                   ").join("      ")
     # binding.pry
-    puts pastel.red(RubyFiglet::Figlet.new(number, "digital"))
+    puts pastel.red.bold(RubyFiglet::Figlet.new(number, "digital"))
     puts "\n \n"
-    puts RubyFiglet::Figlet.new("Linh Gina", "isometric3")
+    # puts RubyFiglet::Figlet.new("Linh Gina", "isometric3")
+    final_pic
+  end
+
+  def final_pic
+    pastel = Pastel.new
+    puts pastel.green.bold("
+                                                    LINH & GINA
+                                          ──────────────────────▄█▀▀▀▀▀█▄
+                                          ────────────▄▄▄▄▄───█▀────────▀█
+                                          ───────────█────▀█▄█───────────▀█
+                                          ───────█───────────█────▀▀▄▄▄▀▀───█
+                                          ──────▐─────────────█─▀▀▀▄────▄───█
+                                          ──────▐─────────────█─────▀──▀─▀▄─█
+                                          ──────▐─────────────█─███▄────────█
+                                          ──────▐─────────────█────▀────██─▐
+                                          ──────▐─────────────█───────▄─────█▄▄
+                                          ──────▐────────────█─────────▌────██─▌
+                                          ──────▐─────────────█───▄▀─▄─▌───█───▌
+                                          ────────█────────────█───▄▄▄▄──█─────▌
+                                          ──────▄▀▀▄───▌───────██───────█▌─────▌
+                                          ────▄▀────█──▌────────▀▀█████▀▀──────▌
+                                          ──▄▀───────███▌──────────▌───────────▌
+                                          ▄▀────────────█─────────────────────█
+                                          █───────▄██▀▀▀▀─────────────────────▌
+                                          █────────▀▄──────▄▀▀▀▀▄────────────█
+                                          █──────────▀▄──▄▀──▄▄▄▀────────────▌
+                                          ▀▄───────────▀▀────█───────────────▌
+                                          █─▀▄────────────────▀▀▀▀▀▄─────────▌
+                                          █───▀▄▄───────────────▄▄▄▀─────────▌`
+    ")
+
   end
 
 end
