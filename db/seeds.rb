@@ -30,7 +30,7 @@ Card.create(category: "love", name: "The Moon", saying:
 Card.create(category: "love", name: "The Fool", saying:
 "You’re learning, but you’re just not quite there yet.")
 Card.create(category: "love", name: "Strength", saying:
-"You are strong and independent.")
+"You are a strong and independent person. Your strength will protect you.")
 Card.create(category: "love", name: "The Star", saying:
 "Sometimes letting go is the best option. It will open up new possibilites.")
 Card.create(category: "love", name: "The Lovers", saying:
