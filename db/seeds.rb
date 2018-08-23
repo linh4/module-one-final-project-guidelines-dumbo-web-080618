@@ -34,7 +34,7 @@ Card.create(category: "love", name: "The Hermit", saying:
 stands alone and reaches deep within himself to find the answers he is
 looking for, and he tells you to pay close attention to symbols that
 appear in your dreams via your subconscious.")
-Card.create(category: "love", name: "The Sun", saying:
+Card.create(category: "love", name: "The Moon", saying:
 "Can you feel the warmth spreading across your face? The Sun card is
 representative of joy and exuberance, which means your enthusiasm for a
 current or potential love connection is well-placed.")

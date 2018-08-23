@@ -63,8 +63,8 @@ class User < ActiveRecord::Base
       when "read"
         puts "What would you like to know today?"
         category_menu(user)
-      # when "history"
-      #
+      when "history"
+        history(user)
       when "exit"
         lucky_number
         exit
@@ -130,10 +130,48 @@ class User < ActiveRecord::Base
      menu(user)
   end
 
+  def readings(user)
+    ReadingCard.select {|rc| rc.user_id == user.id}
+  end
 
-  # def history
-  #   ReadingCard.all.select {|rc| rc.user }
-  # end
+  def cards(user)
+    users_cards = Hash.new(0)
+    Card.all.each do |c|
+      readings(user).each do |r|
+        if r.card_id == c.id
+          users_cards[c] = r.id
+        end
+      end
+    end
+    users_cards
+  end
+
+  def card_names(user)
+    names = []
+    cards(user).each {|k,v| names << k.name}
+    names
+  end
+
+  def card_sayings(user)
+    cards(user).map {|c| c.saying}
+  end
+
+  def categories(user)
+    cards(user).map {|c| c.category}
+  end
+
+
+
+  def history(user)
+    # terminal-table
+    # Date | Name | Category | Saying | Lucky Numbers
+    # rows = []
+    # for i = 0..readings.size-1
+    # rows << ["#{readings[i].date}", "card_names"]
+    readings = ReadingCard.all.select {|rc| rc.user == user}
+    binding.pry
+    puts readings
+  end
 
   def lucky_number
     puts `clear`
