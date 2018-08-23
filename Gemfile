@@ -12,4 +12,5 @@ gem "catpix"
 gem "tty-table"
 gem "pastel"
 gem 'ruby_figlet', '~> 0.6.1'
-gem "shell-spinner"
+# gem "shell-spinner"
+gem 'colorize'

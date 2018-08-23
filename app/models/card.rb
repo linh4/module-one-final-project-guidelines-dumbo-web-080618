@@ -1,3 +1,4 @@
+require 'pry'
 class Card < ActiveRecord::Base
   has_many :reading_cards
   has_many :users, through: :reading_cards
@@ -26,29 +27,23 @@ class Card < ActiveRecord::Base
     end
   end
 
-  def card_img
-    # i = nil
-    Card.all.each do |c|
-      if c.id == 1
-        Catpix::print_image "img/wheel_fortune.png",
-          :limit_x => 0.3,
-          :limit_y => 0.8,
-          :center_x => true,
-          :center_y => true,
-          :bg => "black",
-          :bg_fill => true
-        # elsif c.id == 2
-        #   i = Catpix::print_image "img/the_sun.png",
-        #     :limit_x => 1,
-        #     :limit_y => 2,
-        #     :center_x => true,
-        #     :center_y => true,
-        #     :bg => "black",
-        #     :bg_fill => true
-        end
-      end
+  def try_img(num)
+    Catpix::print_image "img/pic_#{num}.jpg",
+    :limit_x => 1,
+    :limit_y => 2,
+    :center_x => true,
+    :center_y => true,
+    :bg => "black",
+    :bg_fill => true,
+    :resolution => "high"
   end
 
-
+  def card_img(card)
+    Card.all.find do |e|
+      if e.id == card.id
+        try_img(Random.rand(1..3))
+      end
+    end
+  end
 
 end

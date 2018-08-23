@@ -42,8 +42,6 @@ GEM
     rmagick (2.16.0)
     ruby-terminfo (0.1.1)
     ruby_figlet (0.6.1)
-    shell-spinner (1.0.4)
-      colorize
     sinatra (1.4.8)
       rack (~> 1.5)
       rack-protection (~> 1.4)
@@ -91,11 +89,11 @@ PLATFORMS
 
 DEPENDENCIES
   catpix
+  colorize
   pastel
   pry
   require_all
   ruby_figlet (~> 0.6.1)
-  shell-spinner
   sinatra-activerecord
   sqlite3
   tty-prompt

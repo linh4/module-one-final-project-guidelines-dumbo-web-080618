@@ -4,14 +4,15 @@ require 'pastel'
 require 'ruby_figlet'
 require 'catpix'
 
-def wel_word
-  pastel = Pastel.new(enabled: true)
-  color = RubyFiglet::Figlet.new("Tarot House", "Electronic")
-  puts pastel.red(color)
-end
 
 class User < ActiveRecord::Base
   has_many :reading_cards
+
+  def wel_word
+    pastel = Pastel.new(enabled: true)
+    color = RubyFiglet::Figlet.new("Tarot House", "Electronic")
+    puts pastel.red(color)
+  end
 
   def welcome
     prompt = TTY::Prompt.new(active_color: :on_red)
@@ -155,11 +156,14 @@ class User < ActiveRecord::Base
     end
     puts `clear`
     puts `clear`
-    found_card.card_img
-    card_name = found_card.name.insert(0,"                     ")
-    puts RubyFiglet::Figlet.new(card_name, "contessa")
+    found_card.card_img(found_card)
+    card_name = found_card.name.insert(0,"              ")
+    puts RubyFiglet::Figlet.new(card_name, "thin")
 
-    #
+    # card_saying = found_card.saying.insert(0,"                     ")
+    # puts RubyFiglet::Figlet.new(card_saying, "banner")
+
+    #straight
     puts found_card.saying
     new_reading_card(user, found_card)
     menu(user)
@@ -203,7 +207,6 @@ class User < ActiveRecord::Base
         e.yield '\\'
       end
     end
-    # puts pastel.red(spinner)
     1.upto(25) do |i|
       printf("\rLoading History: %s", pastel.yellow(spinner.next))
       sleep(0.1)
@@ -223,7 +226,7 @@ class User < ActiveRecord::Base
 
     pastel = Pastel.new
     header = ["DATE", "CATEGORY", "CARD NAME", "CARD SAYING"]
-    header = header.map {|h| pastel.magenta(h)}
+    header = header.map {|h| pastel.magenta.bold(h)}
     table = TTY::Table.new header, rows
     # puts table.render(:ascii, alignments: :center, padding: 1) do |renderer|
     #   renderer.filter = proc do |val, row_index, col_index|
@@ -237,7 +240,8 @@ class User < ActiveRecord::Base
     #   pastel.renderer.border.color = :green
     # end
   end
-    w = TTY::Prompt.new.select("#{user.name}") do |menu|
+  prompt = TTY::Prompt.new(active_color: :on_red)
+  w = prompt.select("#{user.name}", marker: "❤") do |menu|
       menu.choices "Back" => "back"
    end
    case w
