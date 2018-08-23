@@ -37,7 +37,7 @@ class Card < ActiveRecord::Base
     :bg_fill => true,
     :resolution => "high"
   end
-
+    
   def card_img(card)
     Card.all.find do |e|
       if e.id == card.id
