@@ -1,9 +1,21 @@
 require 'pry'
+require 'tty-table'
+require 'pastel'
+require 'ruby_figlet'
+require 'catpix'
+
+def wel_word
+  pastel = Pastel.new(enabled: true)
+  color = RubyFiglet::Figlet.new("Tarot House", "Electronic")
+  puts pastel.red(color)
+end
+
 class User < ActiveRecord::Base
   has_many :reading_cards
 
   def welcome
-    w = TTY::Prompt.new.select("Tarot house.") do |menu|
+    prompt = TTY::Prompt.new(active_color: :on_red)
+    w = prompt.select(wel_word, marker: "❤") do |menu|
          menu.choices "Existing User" => "existing", "New User" => "newuser", Exit: "exit"
      end
 
@@ -44,8 +56,8 @@ class User < ActiveRecord::Base
   end
 
   def main_menu(hash)
-    # hash[:display] = "" if hash[:display].nil?
-    choice = TTY::Prompt.new.select(hash[:display]) do |menu|
+    prompt = TTY::Prompt.new(active_color: :on_red)
+    choice = prompt.select(hash[:display], marker: "❤") do |menu|
       menu.choices hash[:choices]
     end
     choice
@@ -63,8 +75,8 @@ class User < ActiveRecord::Base
       when "read"
         puts "What would you like to know today?"
         category_menu(user)
-      # when "history"
-      #
+      when "history"
+        history(user)
       when "exit"
         lucky_number
         exit
@@ -80,7 +92,8 @@ class User < ActiveRecord::Base
 
   def category_menu(user)
     puts `clear`
-    w = TTY::Prompt.new.select("#{user.name}") do |menu|
+    prompt = TTY::Prompt.new(active_color: :on_red)
+    w = prompt.select("#{user.name}", marker: "❤") do |menu|
       menu.choices "Love" => "love", "Future" => "future", "Career" => "career", "Self" => "self", "Back" => "back"
    end
 
@@ -115,32 +128,137 @@ class User < ActiveRecord::Base
      when "self"
        found_card = nil
        num = Random.rand(0..4)
-       Card.love_cards.each_with_index do |c, i|
+       Card.self_cards.each_with_index do |c, i|
          if i == num
            found_card = c
          end
-       end
+      end
 
      when "back"
        menu(user)
      end
-     puts found_card.name
-     puts found_card.saying
-     new_reading_card(user, found_card)
-     menu(user)
+
+     pastel = Pastel.new(enabled: true)
+     spinner = Enumerator.new do |e|
+       loop do
+         e.yield '|'
+         e.yield '/'
+         e.yield '-'
+         e.yield '\\'
+       end
+     end
+
+    1.upto(100) do |i|
+      progress = "=" * (i/5) unless i < 5
+      printf("\rLoading card [%-20s] %d%% %s", progress, i, pastel.yellow(spinner.next))
+      sleep(0.03)
+    end
+    puts `clear`
+    puts `clear`
+    found_card.card_img
+    card_name = found_card.name.insert(0,"                     ")
+    puts RubyFiglet::Figlet.new(card_name, "contessa")
+
+    #
+    puts found_card.saying
+    new_reading_card(user, found_card)
+    menu(user)
   end
 
+  def find_readings(user)
+    ReadingCard.select { |rc| rc.user.id == user.id }
+  end
 
-  # def history
-  #   ReadingCard.all.select {|rc| rc.user }
-  # end
+  def find_cards(user)
+    get_card_id = self.find_readings(user).map { |rc| rc.card_id }
+    get_card_id.map do |e|
+      Card.all.select { |card| card.id == e }
+    end.flatten
+  end
+
+  def category(user)
+    self.find_cards(user).map { |e| e.category }
+  end
+
+  def card_name(user)
+    self.find_cards(user).map { |e| e.name }
+  end
+
+  def card_saying(user)
+    self.find_cards(user).map { |e| e.saying }
+  end
+
+  def date(user)
+    self.find_readings(user).map { |e| e.date }
+  end
+
+  def history(user)
+    puts `clear`
+      pastel = Pastel.new(enabled: true)
+      spinner = Enumerator.new do |e|
+      loop do
+        e.yield '|'
+        e.yield '/'
+        e.yield '-'
+        e.yield '\\'
+      end
+    end
+    # puts pastel.red(spinner)
+    1.upto(25) do |i|
+      printf("\rLoading History: %s", pastel.yellow(spinner.next))
+      sleep(0.1)
+    end
+      puts
+      puts
+      puts `clear`
+    if find_readings(user) == []
+      puts "You don't have a history,"
+    else
+
+    readings = ReadingCard.all.select {|rc| rc.user.id == user.id }
+    rows = []
+    for i in 0..category(user).size-1
+      rows << [date(user)[i].strftime('%Y-%m-%d'), category(user)[i].capitalize, card_name(user)[i], card_saying(user)[i]]
+    end
+
+    pastel = Pastel.new
+    header = ["DATE", "CATEGORY", "CARD NAME", "CARD SAYING"]
+    header = header.map {|h| pastel.magenta(h)}
+    table = TTY::Table.new header, rows
+    # puts table.render(:ascii, alignments: :center, padding: 1) do |renderer|
+    #   renderer.filter = proc do |val, row_index, col_index|
+    #     pastel.red.on_green(val)
+    #   end
+    # end
+
+    puts table.render(:ascii, alignments: :center, padding: 1)
+    # pastel = Pastel.new
+    # puts table.render(:ascii, alignments: :center, padding: 1) do |renderer|
+    #   pastel.renderer.border.color = :green
+    # end
+  end
+    w = TTY::Prompt.new.select("#{user.name}") do |menu|
+      menu.choices "Back" => "back"
+   end
+   case w
+   when "back"
+     puts `clear`
+     menu(user)
+   end
+  end
 
   def lucky_number
     puts `clear`
-    puts "Thank you for visiting Tarot House."
-    puts "Here are your lucky numbers:"
-    puts 3.times.map { Random.rand(200) }
+    puts `clear`
+    pastel = Pastel.new(enabled: true)
+    puts "\n \n"
+    puts "                                         Thank you for visiting Tarot House.\n\n"
+    puts "                                            Here are your lucky numbers:\n\n"
+    number = 3.times.map { Random.rand(200).to_s }.insert(0, "                                   ").join("      ")
+    # binding.pry
+    puts pastel.red(RubyFiglet::Figlet.new(number, "digital"))
+    puts "\n \n"
+    puts RubyFiglet::Figlet.new("Linh Gina", "isometric3")
   end
-
 
 end
