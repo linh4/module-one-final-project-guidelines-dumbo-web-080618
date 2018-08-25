@@ -4,18 +4,20 @@
 
 This app will generate a reading from the following categories:
 
-Love
-Future
-Career
-Self
+* Love
+* Future
+* Career
+* Self
+
 To run the app, you will first need to install the following:
 
-$ bundle install
-$ brew uninstall imagemagick
-$ brew install imagemagick@6
-$ export PATH=“/usr/local/opt/imagemagick@6/bin:$PATH”
-$ brew link --force imagemagick@6
-$ gem install rmagick
+* $ bundle install
+* $ brew uninstall imagemagick
+* $ brew install imagemagick@6
+* $ export PATH=“/usr/local/opt/imagemagick@6/bin:$PATH”
+* $ brew link --force imagemagick@6
+* $ gem install rmagick
+
 Then run the file: $ ruby bin/run.rb
 
 Enjoy!
